@@ -6,7 +6,8 @@
     <title>AMOK EQUIPMENT AS — Integrated 3-Statement Model & Executive Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
             --bg-dark: #0f172a;
@@ -43,6 +44,164 @@
             max-width: 1440px;
             margin: 0 auto;
             padding: 24px;
+        }
+
+        /* User Requested Link & Table Border Styles */
+        a {
+            text-decoration: none;
+            color: #464feb;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+
+        tr th, tr td {
+            border: 1px solid #e6e6e6;
+        }
+
+        tr th {
+            background-color: #f5f5f5;
+        }
+
+        body tr th, body tr td {
+            border: 1px solid rgba(230, 230, 230, 0.18);
+        }
+
+        body tr th {
+            background-color: rgba(245, 245, 245, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* Balance Sheet Asset Composition & Treemap Styling */
+        .bs-visuals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(580px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .bs-card {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .bs-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .bs-card-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .bs-card-header p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .year-select {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--font-family);
+            cursor: pointer;
+        }
+
+        .treemap-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            height: 320px;
+            width: 100%;
+        }
+
+        .treemap-tile {
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .treemap-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .treemap-cat {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.85;
+        }
+
+        .treemap-name {
+            font-size: 15px;
+            font-weight: 800;
+            margin-top: 2px;
+            color: #ffffff;
+        }
+
+        .treemap-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .treemap-val {
+            font-size: 18px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .treemap-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tile-inventory {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.45));
+            border-left: 4px solid #f59e0b;
+        }
+
+        .tile-cash {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(29, 78, 216, 0.45));
+            border-left: 4px solid #3b82f6;
+        }
+
+        .tile-receivables {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(14, 116, 144, 0.45));
+            border-left: 4px solid #06b6d4;
+        }
+
+        .tile-fixed {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(109, 40, 217, 0.45));
+            border-left: 4px solid #8b5cf6;
         }
 
         /* Header */
@@ -702,6 +861,20 @@
                             <p>Total equity of NOK 15.52M against total assets of NOK 21.13M yields a robust 73.5% equity ratio with zero long-term bank debt, providing temporary runway to execute turnaround measures.</p>
                         </div>
                     </div>
+            <!-- Executive Dashboard Waterfall Section -->
+            <div style="margin-top: 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary);">🌊 Cash Flow Waterfall Bridge (Profit / Result → Change in Cash)</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Bridge from Operating Result to Net Cash Movement</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-sec active" id="btnDashWfStd" onclick="toggleDashWaterfallView('standard')" style="padding: 5px 12px; font-size: 12px;">Standard Example (1,000 → 700)</button>
+                        <button class="btn-sec" id="btnDashWfScen" onclick="toggleDashWaterfallView('scenario')" style="padding: 5px 12px; font-size: 12px;">Active Scenario</button>
+                    </div>
+                </div>
+                <div style="position: relative; height: 340px; width: 100%;">
+                    <canvas id="waterfallDashChart"></canvas>
                 </div>
             </div>
         </section>
@@ -713,6 +886,7 @@
                 <button class="tab-btn" onclick="switchTab('balanceTab', this)">Balance Sheet</button>
                 <button class="tab-btn" onclick="switchTab('cashTab', this)">Cash Flow Statement</button>
                 <button class="tab-btn" onclick="switchTab('ratiosTab', this)">Key Ratios & Sensitivity</button>
+                <button class="tab-btn" onclick="switchTab('waterfallTab', this)">Cash Flow Waterfall Bridge</button>
             </div>
 
             <!-- Tab 1: Income Statement -->
@@ -757,6 +931,43 @@
                         <!-- Populated by JS -->
                     </tbody>
                 </table>
+
+                <!-- Balance Sheet Asset Composition Visuals (Stacked Bar & Treemap) -->
+                <div class="bs-visuals-grid">
+                    <!-- Visual 1: Multi-Year Asset Composition Stacked Bar -->
+                    <div class="bs-card">
+                        <div class="bs-card-header">
+                            <div>
+                                <h3>📊 Multi-Year Asset Composition (regnskapsår)</h3>
+                                <p>Development of Total Assets & item breakdown by year (nokkel_navn)</p>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 320px; width: 100%;">
+                            <canvas id="multiYearAssetsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Visual 2: Asset Treemap Snapshot -->
+                    <div class="bs-card">
+                        <div class="bs-card-header">
+                            <div>
+                                <h3>🧩 Treemap Asset Composition (underkategori)</h3>
+                                <p>Part-to-whole capital distribution (excluding summary totals)</p>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span style="font-size: 11px; color: var(--text-secondary);">År:</span>
+                                <select id="treemapYearSelect" class="year-select" onchange="renderAssetTreemap(this.value)">
+                                    <option value="2025">2025 (ACT)</option>
+                                    <option value="2024">2024 (ACT)</option>
+                                    <option value="2023">2023 (ACT)</option>
+                                    <option value="2026">2026 (FCT)</option>
+                                    <option value="2030">2030 (FCT)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="treemapContainer"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Tab 3: Cash Flow Statement -->
@@ -793,14 +1004,29 @@
                             <th>2026 <span class="badge-fct">FCT</span></th>
                             <th>2027 <span class="badge-fct">FCT</span></th>
                             <th>2028 <span class="badge-fct">FCT</span></th>
-                            <th>2029 <span class="badge-fct">FCT</span></th>
-                            <th>2030 <span class="badge-fct">FCT</span></th>
                         </tr>
                     </thead>
                     <tbody id="tbodyRatios">
                         <!-- Populated by JS -->
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Tab 5: Cash Flow Waterfall Bridge -->
+            <div id="waterfallTab" class="tab-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Cash Flow Waterfall Bridge — Profit / Result to Change in Cash</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Decomposition of Net Result, Depreciation, Working Capital, Capex, and Financing</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-sec active" id="btnWfModelStd" onclick="toggleModelWaterfallView('standard')" style="padding: 5px 12px; font-size: 12px;">Standard Example (1,000 → 700)</button>
+                        <button class="btn-sec" id="btnWfModelScen" onclick="toggleModelWaterfallView('scenario')" style="padding: 5px 12px; font-size: 12px;">Active Scenario Flow</button>
+                    </div>
+                </div>
+                <div style="position: relative; height: 380px; width: 100%; background: #0f172a; border-radius: 8px; padding: 16px; border: 1px solid var(--border-color);">
+                    <canvas id="waterfallModelChart"></canvas>
+                </div>
             </div>
         </section>
     </div>
@@ -1097,6 +1323,374 @@
             } else if (sc === 'Severe Stress') {
                 outlookEl.innerHTML = `Under the active <strong>Severe Stress</strong> forecast, severe revenue contraction (-15% volume, -2% price) depletes cash by 2027, forcing full credit facility drawdowns and threatening insolvency unless emergency restructuring occurs.`;
             }
+
+            // Update Waterfall Charts with Active Scenario
+            const yearIdx = 2;
+            const netIncK = Math.round(data.netInc[yearIdx] / 1000);
+            const deprK = Math.round((data.depr[yearIdx] || 350000) / 1000);
+            const recK = -Math.round((data.revenue[yearIdx] * 0.12) / 1000);
+            const invK = -Math.round((data.inventory[yearIdx] * 0.08) / 1000);
+            const payK = Math.round((data.opCost[yearIdx] * 0.10) / 1000);
+            const capexK = -450;
+            const loansK = 600;
+            const netCashK = netIncK + deprK + recK + invK + payK + capexK + loansK;
+
+            activeScenarioWaterfallItems = [
+                { name: 'Result', value: netIncK, type: 'total' },
+                { name: 'Depr.', value: deprK, type: 'increase' },
+                { name: 'Receivables', value: recK, type: 'decrease' },
+                { name: 'Inventory', value: invK, type: 'decrease' },
+                { name: 'Payables', value: payK, type: 'increase' },
+                { name: 'Capex', value: capexK, type: 'decrease' },
+                { name: 'Loans', value: loansK, type: 'increase' },
+                { name: 'Change in Cash', value: netCashK, type: 'total' }
+            ];
+
+            renderWaterfallDashChart(dashWfMode === 'standard' ? stdWfItems : activeScenarioWaterfallItems);
+            renderWaterfallModelChart(modelWfMode === 'standard' ? stdWfItems : activeScenarioWaterfallItems);
+            renderMultiYearAssetsChart();
+            renderAssetTreemap(document.getElementById('treemapYearSelect') ? document.getElementById('treemapYearSelect').value : '2025');
+        }
+
+        // Waterfall Chart plugins & functions for Amok Equipment
+        let wfDashChartInstance = null;
+        let wfModelChartInstance = null;
+        let dashWfMode = 'standard';
+        let modelWfMode = 'standard';
+        let activeScenarioWaterfallItems = null;
+
+        const wfConnectorPlugin = {
+            id: 'wfConnectorPlugin',
+            beforeDatasetsDraw(chart) {
+                const { ctx, scales: { y } } = chart;
+                const meta = chart.getDatasetMeta(0);
+                if (!meta || !meta.data) return;
+
+                ctx.save();
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+                ctx.setLineDash([3, 3]);
+                ctx.lineWidth = 1;
+
+                for (let i = 0; i < meta.data.length - 1; i++) {
+                    const currentBar = meta.data[i];
+                    const nextBar = meta.data[i + 1];
+                    const raw = chart.data.datasets[0].data[i];
+                    if (!raw) continue;
+
+                    const endVal = Array.isArray(raw) ? raw[1] : raw;
+                    const yPos = y.getPixelForValue(endVal);
+
+                    ctx.beginPath();
+                    ctx.moveTo(currentBar.x, yPos);
+                    ctx.lineTo(nextBar.x, yPos);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+        };
+
+        const wfLabelsPlugin = {
+            id: 'wfLabelsPlugin',
+            afterDatasetsDraw(chart) {
+                const { ctx, scales: { y } } = chart;
+                const meta = chart.getDatasetMeta(0);
+                if (!meta || !meta.data) return;
+
+                ctx.save();
+                ctx.font = '600 11px "JetBrains Mono", monospace';
+                ctx.textAlign = 'center';
+
+                meta.data.forEach((bar, i) => {
+                    const raw = chart.data.datasets[0].data[i];
+                    const item = chart.data.waterfallItems[i];
+                    if (!raw || !item) return;
+
+                    let valStr = '';
+                    if (item.type === 'total') {
+                        valStr = typeof item.value === 'number' ? item.value.toLocaleString() : item.value;
+                    } else {
+                        valStr = (item.value > 0 ? '+' : '') + item.value.toLocaleString();
+                    }
+
+                    const yStart = y.getPixelForValue(raw[0]);
+                    const yEnd = y.getPixelForValue(raw[1]);
+                    const topY = Math.min(yStart, yEnd);
+
+                    if (item.type === 'total') {
+                        ctx.fillStyle = '#f8fafc';
+                    } else if (item.value >= 0) {
+                        ctx.fillStyle = '#34d399';
+                    } else {
+                        ctx.fillStyle = '#f87171';
+                    }
+
+                    ctx.fillText(valStr, bar.x, topY - 6);
+                });
+
+                ctx.restore();
+            }
+        };
+
+        const stdWfItems = [
+            { name: 'Result', value: 1000, type: 'total' },
+            { name: 'Depr.', value: 200, type: 'increase' },
+            { name: 'Receivables', value: -300, type: 'decrease' },
+            { name: 'Inventory', value: -200, type: 'decrease' },
+            { name: 'Payables', value: 100, type: 'increase' },
+            { name: 'Capex', value: -500, type: 'decrease' },
+            { name: 'Loans', value: 400, type: 'increase' },
+            { name: 'Change in Cash', value: 700, type: 'total' }
+        ];
+
+        function createWfChartConfig(canvasId, items) {
+            const labels = items.map(it => it.name);
+            let runningTotal = 0;
+            const ranges = [];
+            const bgColors = [];
+            const borderColors = [];
+
+            items.forEach((item, idx) => {
+                if (idx === 0) {
+                    ranges.push([0, item.value]);
+                    runningTotal = item.value;
+                    bgColors.push('rgba(59, 130, 246, 0.85)');
+                    borderColors.push('#3b82f6');
+                } else if (idx === items.length - 1) {
+                    ranges.push([0, item.value]);
+                    bgColors.push('rgba(6, 182, 212, 0.85)');
+                    borderColors.push('#06b6d4');
+                } else {
+                    const start = runningTotal;
+                    runningTotal += item.value;
+                    ranges.push([start, runningTotal]);
+                    if (item.value >= 0) {
+                        bgColors.push('rgba(16, 185, 129, 0.85)');
+                        borderColors.push('#10b981');
+                    } else {
+                        bgColors.push('rgba(239, 68, 68, 0.85)');
+                        borderColors.push('#ef4444');
+                    }
+                }
+            });
+
+            return {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    waterfallItems: items,
+                    datasets: [{
+                        label: 'Cash Flow Bridge',
+                        data: ranges,
+                        backgroundColor: bgColors,
+                        borderColor: borderColors,
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const idx = context.dataIndex;
+                                    const item = items[idx];
+                                    if (item.type === 'total') {
+                                        return `${item.name}: ${item.value.toLocaleString()}`;
+                                    }
+                                    return `${item.name}: ${item.value > 0 ? '+' : ''}${item.value.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
+                        }
+                    }
+                },
+                plugins: [wfConnectorPlugin, wfLabelsPlugin]
+            };
+        }
+
+        function renderWaterfallDashChart(items) {
+            const canvas = document.getElementById('waterfallDashChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (wfDashChartInstance) wfDashChartInstance.destroy();
+            wfDashChartInstance = new Chart(ctx, createWfChartConfig('waterfallDashChart', items || stdWfItems));
+        }
+
+        function renderWaterfallModelChart(items) {
+            const canvas = document.getElementById('waterfallModelChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (wfModelChartInstance) wfModelChartInstance.destroy();
+            wfModelChartInstance = new Chart(ctx, createWfChartConfig('waterfallModelChart', items || stdWfItems));
+        }
+
+        function toggleDashWaterfallView(mode) {
+            dashWfMode = mode;
+            const btnStd = document.getElementById('btnDashWfStd');
+            const btnScen = document.getElementById('btnDashWfScen');
+            if (btnStd) btnStd.classList.toggle('active', mode === 'standard');
+            if (btnScen) btnScen.classList.toggle('active', mode === 'scenario');
+            renderWaterfallDashChart(mode === 'standard' ? stdWfItems : (activeScenarioWaterfallItems || stdWfItems));
+        }
+
+        function toggleModelWaterfallView(mode) {
+            modelWfMode = mode;
+            const btnStd = document.getElementById('btnWfModelStd');
+            const btnScen = document.getElementById('btnWfModelScen');
+            if (btnStd) btnStd.classList.toggle('active', mode === 'standard');
+            if (btnScen) btnScen.classList.toggle('active', mode === 'scenario');
+            renderWaterfallModelChart(mode === 'standard' ? stdWfItems : (activeScenarioWaterfallItems || stdWfItems));
+        }
+
+        let multiYearAssetsChartInstance = null;
+
+        function renderMultiYearAssetsChart() {
+            const canvas = document.getElementById('multiYearAssetsChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (multiYearAssetsChartInstance) multiYearAssetsChartInstance.destroy();
+
+            const sc = document.getElementById('scenarioSelect') ? document.getElementById('scenarioSelect').value : 'Base Case';
+            const data = modelData[sc] || modelData['Base Case'];
+
+            const labels = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
+
+            const cashData = data.cash.map(v => Math.round(v / 1000000 * 100) / 100);
+            const invData = data.inventory.map(v => Math.round(v / 1000000 * 100) / 100);
+            const recData = data.revenue.map(r => Math.round(r * 0.065 / 1000000 * 100) / 100);
+            const fixedData = data.assets.map((a, i) => {
+                const diff = a - (data.cash[i] + data.inventory[i] + data.revenue[i] * 0.065);
+                return Math.max(0, Math.round(diff / 1000000 * 100) / 100);
+            });
+
+            multiYearAssetsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Bank / Likvider (Cash)',
+                            data: cashData,
+                            backgroundColor: 'rgba(59, 130, 246, 0.85)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Fordringer (Receivables)',
+                            data: recData,
+                            backgroundColor: 'rgba(6, 182, 212, 0.85)',
+                            borderColor: '#06b6d4',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Varer (Inventory)',
+                            data: invData,
+                            backgroundColor: 'rgba(245, 158, 11, 0.85)',
+                            borderColor: '#f59e0b',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Anleggsmidler (Fixed Assets)',
+                            data: fixedData,
+                            backgroundColor: 'rgba(139, 92, 246, 0.85)',
+                            borderColor: '#8b5cf6',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { color: '#f8fafc', font: { family: 'Inter', size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(c) { return `${c.dataset.label}: ${c.parsed.y} MNOK`; }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 } }
+                        },
+                        y: {
+                            stacked: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#64748b',
+                                font: { family: 'JetBrains Mono', size: 11 },
+                                callback: function(v) { return v + ' MNOK'; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderAssetTreemap(selectedYear) {
+            const container = document.getElementById('treemapContainer');
+            if (!container) return;
+
+            const sc = document.getElementById('scenarioSelect') ? document.getElementById('scenarioSelect').value : 'Base Case';
+            const data = modelData[sc] || modelData['Base Case'];
+
+            const years = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
+            let idx = years.indexOf(selectedYear);
+            if (idx === -1) idx = 2; // Default 2025 ACT
+
+            const inventoryVal = data.inventory[idx] || 0;
+            const cashVal = data.cash[idx] || 0;
+            const assetsVal = data.assets[idx] || (inventoryVal + cashVal);
+            const receivablesVal = Math.round(data.revenue[idx] * 0.065) || 1000000;
+            const fixedVal = Math.max(0, assetsVal - (inventoryVal + cashVal + receivablesVal));
+
+            const items = [
+                { cat: 'Omløpsmidler', name: 'Varer (Inventory)', val: inventoryVal, skin: 'tile-inventory' },
+                { cat: 'Omløpsmidler', name: 'Bank og kontanter (Cash)', val: cashVal, skin: 'tile-cash' },
+                { cat: 'Omløpsmidler', name: 'Fordringer (Receivables)', val: receivablesVal, skin: 'tile-receivables' },
+                { cat: 'Anleggsmidler', name: 'Anleggsmidler (Fixed Assets)', val: fixedVal, skin: 'tile-fixed' }
+            ];
+
+            const totalDetailed = items.reduce((sum, it) => sum + it.val, 0);
+            items.sort((a, b) => b.val - a.val);
+
+            container.innerHTML = `
+                <div class="treemap-grid">
+                    ${items.map(item => {
+                        const pct = totalDetailed > 0 ? ((item.val / totalDetailed) * 100).toFixed(1) : '0.0';
+                        return `
+                            <div class="treemap-tile ${item.skin}">
+                                <div>
+                                    <div class="treemap-cat">${item.cat}</div>
+                                    <div class="treemap-name">${item.name}</div>
+                                </div>
+                                <div class="treemap-bottom">
+                                    <div class="treemap-val">NOK ${(item.val / 1000000).toFixed(2)}M</div>
+                                    <div class="treemap-badge">${pct}%</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
         }
 
         function switchTab(tabId, btn) {
@@ -1104,6 +1698,16 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
+            if (tabId === 'waterfallTab') {
+                setTimeout(() => {
+                    renderWaterfallModelChart(modelWfMode === 'standard' ? stdWfItems : (activeScenarioWaterfallItems || stdWfItems));
+                }, 50);
+            } else if (tabId === 'balanceTab') {
+                setTimeout(() => {
+                    renderMultiYearAssetsChart();
+                    renderAssetTreemap(document.getElementById('treemapYearSelect') ? document.getElementById('treemapYearSelect').value : '2025');
+                }, 50);
+            }
         }
 
         function openMemoModal() {
@@ -1124,6 +1728,9 @@
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             updateModelScenario();
+            renderWaterfallDashChart(stdWfItems);
+            renderMultiYearAssetsChart();
+            renderAssetTreemap('2025');
         });
     </script>
 </body>
