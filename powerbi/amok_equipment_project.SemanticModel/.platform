@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "amok_equipment_project"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "c79ea636-9830-46a3-94c2-eee0779f4a8c"
+  }
+}

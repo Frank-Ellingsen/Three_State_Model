@@ -1,0 +1,21 @@
+Kontantstrøm År,Type,Navn,Beløp
+2024,Drift,Årsresultat,625633
+2024,Drift,Avskrivninger,0
+2024,Drift,Endring kundefordringer,4245993
+2024,Drift,Endring varelager,-2203851
+2024,Drift,Endring leverandørgjeld,-1020618
+2024,Drift,Estimert kontantstrøm fra drift,1647157
+2024,Bank,Åpningsbank,9021420
+2024,Bank,Sluttbank,8518975
+2024,Bank,Endring bank,-502445
+2024,Ufordelt,Ufordelt øvrig kontantstrøm,-2149602
+2025,Drift,Årsresultat,-699798
+2025,Drift,Avskrivninger,0
+2025,Drift,Endring kundefordringer,123211
+2025,Drift,Endring varelager,765854
+2025,Drift,Endring leverandørgjeld,-1552895
+2025,Drift,Estimert kontantstrøm fra drift,-1363628
+2025,Bank,Åpningsbank,8518975
+2025,Bank,Sluttbank,6914012
+2025,Bank,Endring bank,-1604963
+2025,Ufordelt,Ufordelt øvrig kontantstrøm,-241335

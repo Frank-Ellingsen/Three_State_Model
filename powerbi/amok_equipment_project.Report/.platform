@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "amok_equipment_project"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "bee93a39-f5d0-4054-86a6-d36bfb644388"
+  }
+}

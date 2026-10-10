@@ -1,0 +1,6 @@
+Transaction ID,Vendor Name (Raw),Department,Invoice Amount ($),Invoice Date
+TXN-101,MSFT,IT Ops,1250.0,2026-09-15
+TXN-102,Microsoft Corp.,Software,4800.5,2026-09-18
+TXN-103,I.S.O.,Risk,9500.0,2026-09-20
+TXN-104,Salesforce.com,Sales,3200.0,2026-09-22
+TXN-105,Unknown Vendor Inc,General,750.0,2026-09-25

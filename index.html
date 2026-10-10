@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMOK EQUIPMENT AS — Integrated 3-Statement Model & Executive Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --input-blue-bg: #1e3a8a;
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .brand-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .scenario-selector-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .scenario-selector-wrap label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        select.scenario-select {
+            background: transparent;
+            color: var(--text-primary);
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+
+        select.scenario-select option {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .btn-memo {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-memo:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Dashboard Overview Grid */
+        .dashboard-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gauges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .gauge-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: border-color 0.2s ease;
+        }
+
+        .gauge-card:hover {
+            border-color: #475569;
+        }
+
+        .gauge-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .gauge-container {
+            position: relative;
+            width: 180px;
+            height: 100px;
+        }
+
+        .gauge-val-display {
+            text-align: center;
+            margin-top: -8px;
+        }
+
+        .gauge-value {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .gauge-target {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .gauge-status-pill {
+            margin-top: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .status-healthy { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-warning { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .status-danger { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        /* Warnings Panel */
+        .warnings-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .warnings-header {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .warning-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-amber);
+            font-size: 13px;
+        }
+
+        .warning-item.danger {
+            border-left-color: var(--accent-red);
+        }
+
+        .warning-item.info {
+            border-left-color: var(--accent-blue);
+        }
+
+        .warning-icon {
+            font-size: 16px;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        .warning-content strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+        }
+
+        .warning-content p {
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* 3-Statement Model Tabs & Tables */
+        .model-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .model-tabs {
+            display: flex;
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-blue);
+            border-bottom-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tufte Financial Table Styling */
+        table.financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        table.financial-table th, 
+        table.financial-table td {
+            padding: 8px 14px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+        }
+
+        table.financial-table th {
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-align: right;
+            background: #0f172a;
+            position: sticky;
+            top: 0;
+        }
+
+        table.financial-table th:first-child {
+            text-align: left;
+        }
+
+        table.financial-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        table.financial-table td {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            color: #cbd5e1;
+        }
+
+        table.financial-table tr.section-header td {
+            background: rgba(59, 130, 246, 0.15);
+            font-weight: 700;
+            color: #93c5fd;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 11px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        table.financial-table tr.total-row td {
+            font-weight: 700;
+            border-top: 1px solid var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            color: white;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        table.financial-table tr.subtotal-row td {
+            font-weight: 600;
+            border-top: 1px dashed var(--border-color);
+            color: #e2e8f0;
+        }
+
+        .badge-act {
+            font-size: 10px;
+            font-weight: 700;
+            background: #334155;
+            color: #94a3b8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .badge-fct {
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .negative-num {
+            color: #f87171 !important;
+        }
+
+        /* Memo Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 820px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .btn-close:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .memo-doc {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 24px;
+            font-family: var(--font-family);
+        }
+
+        .memo-meta {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .memo-meta-item strong {
+            color: var(--text-secondary);
+        }
+
+        .memo-section {
+            margin-bottom: 20px;
+        }
+
+        .memo-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #93c5fd;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 10px;
+        }
+
+        .memo-section ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .memo-section li {
+            margin-bottom: 6px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-sec {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-sec:hover {
+            background: #475569;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .memo-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="brand-logo">A</div>
+                <div class="brand-text">
+                    <h1>AMOK EQUIPMENT AS</h1>
+                    <p>Integrated 3-Statement Model & Financial Controller Dashboard</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="scenario-selector-wrap">
+                    <label for="scenarioSelect">Scenario:</label>
+                    <select id="scenarioSelect" class="scenario-select" onchange="updateModelScenario()">
+                        <option value="Base Case" selected>Base Case (2% Vol, 2% Price)</option>
+                        <option value="Bull Case">Bull Case (10% Vol, 3% Price)</option>
+                        <option value="Bear Case">Bear Case (-4% Vol, 1% Price)</option>
+                        <option value="Severe Stress">Severe Stress (-15% Vol, -2% Price)</option>
+                    </select>
+                </div>
+                <button class="btn-memo" onclick="openMemoModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Generate Action Memo
+                </button>
+            </div>
+        </header>
+
+        <!-- Financial Health Dashboard -->
+        <section class="dashboard-section">
+            <h2 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Financial Health & Key Metric Gauges (2025 Reporting Year)
+            </h2>
+            
+            <div class="gauges-grid">
+                <!-- Gauge 1: Operating Margin -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Operating Margin (EBIT %)</div>
+                    <div class="gauge-container">
+                        <canvas id="gaugeEbit" width="180" height="100"></canvas>
+                    </div>
+                    <div class="gauge-val-display">
+                        <div class="gauge-value" id="valEbit">-6.6%</div>
+                        <div class="gauge-target">Target: &gt; 8.0%</div>
+                    </div>
+                    <div class="gauge-status-pill status-danger" id="pillEbit">MARGIN EROSION</div>
+                </div>
+
+                <!-- Gauge 2: Equity Ratio -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Equity Ratio (Egenkapitalandel)</div>
+                    <div class="gauge-container">
+                        <canvas id="gaugeEquity" width="180" height="100"></canvas>
+                    </div>
+                    <div class="gauge-val-display">
+                        <div class="gauge-value" id="valEquity">73.5%</div>
+                        <div class="gauge-target">Target: &gt; 35.0%</div>
+                    </div>
+                    <div class="gauge-status-pill status-healthy" id="pillEquity">SOLVENT & STRONG</div>
+                </div>
+
+                <!-- Gauge 3: Current Ratio -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Liquidity Ratio 1 (Likviditetsgrad 1)</div>
+                    <div class="gauge-container">
+                        <canvas id="gaugeCurrent" width="180" height="100"></canvas>
+                    </div>
+                    <div class="gauge-val-display">
+                        <div class="gauge-value" id="valCurrent">1.85x</div>
+                        <div class="gauge-target">Target: &gt; 1.30x</div>
+                    </div>
+                    <div class="gauge-status-pill status-healthy" id="pillCurrent">ADEQUATE BUFFER</div>
+                </div>
+
+                <!-- Gauge 4: Inventory / Cash Conversion -->
+                <div class="gauge-card">
+                    <div class="gauge-title">Inventory Intensity (Varer / Revenue)</div>
+                    <div class="gauge-container">
+                        <canvas id="gaugeInventory" width="180" height="100"></canvas>
+                    </div>
+                    <div class="gauge-val-display">
+                        <div class="gauge-value" id="valInventory">82.0%</div>
+                        <div class="gauge-target">Target: &lt; 40.0%</div>
+                    </div>
+                    <div class="gauge-status-pill status-warning" id="pillInventory">HIGH CAPITAL TIE-UP</div>
+                </div>
+            </div>
+
+            <!-- Warnings Panel -->
+            <div class="warnings-panel">
+                <div class="warnings-header">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    Active Financial Health Warnings & Controller Alerts
+                </div>
+                <div class="warning-items">
+                    <div class="warning-item danger">
+                        <div class="warning-icon">🚨</div>
+                        <div class="warning-content">
+                            <strong>Operating Deficit & Profit Compression (2025)</strong>
+                            <p>Revenue contracted by 20.3% YoY to NOK 16.23M, dragging EBIT into negative territory (-NOK 1.08M). Fixed personnel and operational overheads were not adjusted proportionally.</p>
+                        </div>
+                    </div>
+                    <div class="warning-item">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-content">
+                            <strong>Working Capital Lockup in Inventory</strong>
+                            <p>Inventory and other operating current assets stand at NOK 13.31M, representing over 82% of annual turnover. This ties up operating cash and reduces liquid asset velocity.</p>
+                        </div>
+                    </div>
+                    <div class="warning-item info">
+                        <div class="warning-icon">🛡️</div>
+                        <div class="warning-content">
+                            <strong>Balance Sheet Solvency & Debt Shield</strong>
+                            <p>Total equity of NOK 15.52M against total assets of NOK 21.13M yields a robust 73.5% equity ratio with zero long-term bank debt, providing temporary runway to execute turnaround measures.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3-Statement Model Interactive Table Section -->
+        <section class="model-section">
+            <div class="model-tabs">
+                <button class="tab-btn active" onclick="switchTab('incomeTab', this)">Income Statement (P&L)</button>
+                <button class="tab-btn" onclick="switchTab('balanceTab', this)">Balance Sheet</button>
+                <button class="tab-btn" onclick="switchTab('cashTab', this)">Cash Flow Statement</button>
+                <button class="tab-btn" onclick="switchTab('ratiosTab', this)">Key Ratios & Sensitivity</button>
+            </div>
+
+            <!-- Tab 1: Income Statement -->
+            <div id="incomeTab" class="tab-content active">
+                <table class="financial-table" id="tableIncome">
+                    <thead>
+                        <tr>
+                            <th>Line Item (NOK)</th>
+                            <th>2023 <span class="badge-act">ACT</span></th>
+                            <th>2024 <span class="badge-act">ACT</span></th>
+                            <th>2025 <span class="badge-act">ACT</span></th>
+                            <th>2026 <span class="badge-fct">FCT</span></th>
+                            <th>2027 <span class="badge-fct">FCT</span></th>
+                            <th>2028 <span class="badge-fct">FCT</span></th>
+                            <th>2029 <span class="badge-fct">FCT</span></th>
+                            <th>2030 <span class="badge-fct">FCT</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyIncome">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 2: Balance Sheet -->
+            <div id="balanceTab" class="tab-content">
+                <table class="financial-table" id="tableBalance">
+                    <thead>
+                        <tr>
+                            <th>Line Item (NOK)</th>
+                            <th>2023 <span class="badge-act">ACT</span></th>
+                            <th>2024 <span class="badge-act">ACT</span></th>
+                            <th>2025 <span class="badge-act">ACT</span></th>
+                            <th>2026 <span class="badge-fct">FCT</span></th>
+                            <th>2027 <span class="badge-fct">FCT</span></th>
+                            <th>2028 <span class="badge-fct">FCT</span></th>
+                            <th>2029 <span class="badge-fct">FCT</span></th>
+                            <th>2030 <span class="badge-fct">FCT</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyBalance">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 3: Cash Flow Statement -->
+            <div id="cashTab" class="tab-content">
+                <table class="financial-table" id="tableCash">
+                    <thead>
+                        <tr>
+                            <th>Line Item (NOK)</th>
+                            <th>2023 <span class="badge-act">ACT</span></th>
+                            <th>2024 <span class="badge-act">ACT</span></th>
+                            <th>2025 <span class="badge-act">ACT</span></th>
+                            <th>2026 <span class="badge-fct">FCT</span></th>
+                            <th>2027 <span class="badge-fct">FCT</span></th>
+                            <th>2028 <span class="badge-fct">FCT</span></th>
+                            <th>2029 <span class="badge-fct">FCT</span></th>
+                            <th>2030 <span class="badge-fct">FCT</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyCash">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tab 4: Ratios -->
+            <div id="ratiosTab" class="tab-content">
+                <table class="financial-table" id="tableRatios">
+                    <thead>
+                        <tr>
+                            <th>Financial KPI / Metric</th>
+                            <th>2023 <span class="badge-act">ACT</span></th>
+                            <th>2024 <span class="badge-act">ACT</span></th>
+                            <th>2025 <span class="badge-act">ACT</span></th>
+                            <th>2026 <span class="badge-fct">FCT</span></th>
+                            <th>2027 <span class="badge-fct">FCT</span></th>
+                            <th>2028 <span class="badge-fct">FCT</span></th>
+                            <th>2029 <span class="badge-fct">FCT</span></th>
+                            <th>2030 <span class="badge-fct">FCT</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyRatios">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Executive Action Memo Modal -->
+    <div class="modal-overlay" id="memoModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    Recommended Action Memorandum
+                </h2>
+                <button class="btn-close" onclick="closeMemoModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="memo-doc">
+                    <div class="memo-meta">
+                        <div class="memo-meta-item"><strong>TO:</strong> Board of Directors & Executive Management</div>
+                        <div class="memo-meta-item"><strong>FROM:</strong> Frank Ellingsen (Financial Controller / Project Specialist)</div>
+                        <div class="memo-meta-item"><strong>DATE:</strong> October 10, 2026</div>
+                        <div class="memo-meta-item"><strong>SUBJECT:</strong> Financial Turnaround & Operational Action Plan — AMOK EQUIPMENT AS</div>
+                    </div>
+
+                    <div class="memo-section">
+                        <h3>1. Executive Diagnostic & Financial Position</h3>
+                        <p id="memoDiagnostic">
+                            Following the 2025 reporting period, AMOK EQUIPMENT AS faces operational profitability pressure despite maintaining a strong balance sheet equity cushion (73.5% equity ratio). Operating revenues decreased by 20.3% to NOK 16.23M, triggering an operating loss (EBIT) of -NOK 1.08M and a net loss of -NOK 0.70M.
+                        </p>
+                    </div>
+
+                    <div class="memo-section">
+                        <h3>2. Core Vulnerabilities & Operational Bottlenecks</h3>
+                        <ul>
+                            <li><strong>Severe Working Capital Lockup:</strong> Inventory stands at NOK 13.31M (>82% of revenue), consuming operating cash flow and creating obsolescence risk.</li>
+                            <li><strong>Fixed Overhead Rigidity:</strong> Personnel expenses (NOK 4.39M) and non-personnel operating expenses (NOK 12.92M) were not downscaled to match volume contraction.</li>
+                            <li><strong>Cash Drain:</strong> Cash and bank reserves declined from NOK 9.02M in 2023 to NOK 6.91M in 2025.</li>
+                        </ul>
+                    </div>
+
+                    <div class="memo-section">
+                        <h3>3. Recommended Action Plan (Prioritized Roadmap)</h3>
+                        <ul>
+                            <li><strong>Phase 1 — Inventory Monetization & Cash Clearance (Months 1–3):</strong> Implement an immediate 15–20% inventory clearance campaign targeting slow-moving equipment lines to release NOK 3.0M–4.0M in liquidity.</li>
+                            <li><strong>Phase 2 — Direct Operating Cost Restructuring (Months 3–6):</strong> Re-negotiate supplier cost-of-goods agreements and target a 5% reduction in non-personnel operating expenses to restore positive EBIT margins.</li>
+                            <li><strong>Phase 3 — Credit Facility & Cash Buffer Protection (Immediate):</strong> Secure a standby credit revolver of NOK 5.0M with commercial banks while equity is strong (73.5%) to insulate against downside risk under Bear/Severe Stress scenarios.</li>
+                            <li><strong>Phase 4 — Strict Capital Discipline:</strong> Cap annual CapEx to essential maintenance (<2% of revenue) until operating margin returns above 5.0%.</li>
+                        </ul>
+                    </div>
+
+                    <div class="memo-section">
+                        <h3>4. Scenario Contingency Outlook</h3>
+                        <p id="memoScenarioOutlook">
+                            Under the active <strong>Base Case</strong> forecast, revenue recovers to NOK 28.47M by 2030 with EBITDA of NOK 1.54M and ending cash of NOK 9.08M. However, if market demand deteriorates into a <strong>Severe Stress</strong> scenario (-15% volume, -2% price), cash is depleted by 2028, requiring full drawdown of the NOK 5.0M credit facility. Immediate execution of Phase 1 and 2 is mandatory.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-sec" onclick="copyMemoToClipboard()">Copy to Clipboard</button>
+                <button class="btn-sec" onclick="window.print()">Print / Export PDF</button>
+                <button class="btn-memo" onclick="closeMemoModal()">Close Memorandum</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Model Data across Scenarios (2023-2025 Actuals, 2026-2030 Projections)
+        const years = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
+
+        const modelData = {
+            "Base Case": {
+                revenue: [18015123, 20366506, 16231415, 16887165, 17569304, 18279074, 19017548, 19785857],
+                opCost:  [13734252, 15246069, 12916435, 11821015, 12298513, 12795352, 13312284, 13850099],
+                persCost:[4280871,  5120437,  4393760,  4637613,  4894998,  5166668,  5453318,  5755777],
+                ebitda:  [0,        0,        -1078780, 428537,   375793,   317054,   251946,   179981],
+                depr:    [0,        0,        0,        260714,   265934,   265983,   262272,   255531],
+                ebit:    [2397355,  752192,   -1078780, 167823,   109859,   51071,    -10326,   -75550],
+                netFin:  [1363480,  58522,    204270,   172850,   168541,   164802,   161205,   157303],
+                tax:     [574565,   185081,   -174712,  74948,    61248,    47492,    33193,    17985],
+                netInc:  [3186270,  635633,   -699798,  265725,   217152,   168381,   117686,   63768],
+                cash:    [9021420,  8518975,  6914012,  6741624,  6592070,  6448208,  6292113,  6102148],
+                inventory:[11900000, 14100000, 13310000, 10525629, 10950864, 11393279, 11853406, 12331835],
+                equity:  [15600000, 16235633, 15535835, 15801560, 16018712, 16187093, 16304779, 16368547],
+                assets:  [23800000, 23435633, 21135835, 20387532, 20739943, 21098674, 21457850, 21810574]
+            },
+            "Bull Case": {
+                revenue: [18015123, 20366506, 16231415, 18391195, 20837263, 23608620, 26748566, 30306126],
+                opCost:  [13734252, 15246069, 12916435, 12506013, 14169339, 16053862, 18189025, 20608166],
+                persCost:[4280871,  5120437,  4393760,  4978130,  5639906,  6389658,  7239088,  8201479],
+                ebitda:  [0,        0,        -1078780, 907052,   1028018,  1165100,  1320453,  1496481],
+                depr:    [0,        0,        0,        284114,   315934,   355983,   402272,   455531],
+                ebit:    [2397355,  752192,   -1078780, 622938,   712084,   809117,   918181,   1040950],
+                netFin:  [1363480,  58522,    204270,   207850,   248541,   294802,   341205,   397303],
+                tax:     [574565,   185081,   -174712,  182773,   211337,   242862,   277065,   316416],
+                netInc:  [3186270,  635633,   -699798,  648015,   749288,   861057,   982321,   1121837],
+                cash:    [9021420,  8518975,  6914012,  7541624,  8492070,  9648208,  11092113, 12802148],
+                inventory:[11900000, 14100000, 13310000, 11136011, 12616239, 14293967, 16194485, 18349272],
+                equity:  [15600000, 16235633, 15535835, 16183850, 16933138, 17794195, 18776516, 19898353],
+                assets:  [23800000, 23435633, 21135835, 21887532, 23539943, 25598674, 28057850, 31010574]
+            },
+            "Bear Case": {
+                revenue: [18015123, 20366506, 16231415, 15744473, 15272139, 14813975, 14369656, 13938866],
+                opCost:  [13734252, 15246069, 12916435, 13067913, 12675875, 12295599, 11926814, 11569259],
+                persCost:[4280871,  5120437,  4393760,  4470451,  4548484,  4627833,  4708520,  4790569],
+                ebitda:  [0,        0,        -1078780, -1793891, -1952220, -2109457, -2265678, -2420962],
+                depr:    [0,        0,        0,        230714,   215934,   205983,   192272,   185531],
+                ebit:    [2397355,  752192,   -1078780, -2024605, -2168154, -2315440, -2457950, -2606493],
+                netFin:  [1363480,  58522,    204270,   132850,   88541,    34802,    -18795,   -77303],
+                tax:     [574565,   185081,   -174712,  0,        0,        0,        0,        0],
+                netInc:  [3186270,  635633,   -699798,  -1891755, -2079613, -2280638, -2476745, -2683796],
+                cash:    [9021420,  8518975,  6914012,  4841624,  2692070,  380208,   0,        0],
+                inventory:[11900000, 14100000, 13310000, 11634674, 11285222, 10946680, 10618721, 10299997],
+                equity:  [15600000, 16235633, 15535835, 13644080, 11564467, 9283829,  6807084,  4123288],
+                assets:  [23800000, 23435633, 21135835, 18887532, 16739943, 14598674, 12457850, 10210574]
+            },
+            "Severe Stress": {
+                revenue: [18015123, 20366506, 16231415, 13472074, 11181822, 9280912,  7703157,  6393620],
+                opCost:  [13734252, 15246069, 12916435, 12124867, 10063640, 8352821,  6932841,  5754258],
+                persCost:[4280871,  5120437,  4393760,  4033472,  3702727,  3399103,  3120377,  2864506],
+                ebitda:  [0,        0,        -1078780, -2686265, -2584545, -2471012, -2350061, -2225144],
+                depr:    [0,        0,        0,        200714,   175934,   155983,   132272,   115531],
+                ebit:    [2397355,  752192,   -1078780, -2886979, -2760479, -2626995, -2482333, -2340675],
+                netFin:  [1363480,  58522,    204270,   -82850,   -218541,  -364802,  -511205,  -677303],
+                tax:     [574565,   185081,   -174712,  0,        0,        0,        0,        0],
+                netInc:  [3186270,  635633,   -699798,  -2969829, -2979020, -2991797, -2993538, -3017978],
+                cash:    [9021420,  8518975,  6914012,  1841624,  0,        0,        0,        0],
+                inventory:[11900000, 14100000, 13310000, 10795248, 8961054,  7437887,  6173256,  5123793],
+                equity:  [15600000, 16235633, 15535835, 12566006, 9586986,  6595189,  3601651,  583673],
+                assets:  [23800000, 23435633, 21135835, 16387532, 13739943, 11598674, 9857850,  8410574]
+            }
+        };
+
+        // Format helpers
+        function fmt(num, isPct = false) {
+            if (num === null || num === undefined || isNaN(num)) return "-";
+            if (isPct) {
+                return (num * 100).toFixed(1) + "%";
+            }
+            if (num < 0) {
+                return `<span class="negative-num">(${Math.abs(num).toLocaleString('en-US')})</span>`;
+            }
+            return num.toLocaleString('en-US');
+        }
+
+        // Render Gauges
+        function drawGauge(canvasId, value, min, max, targetVal, formatPct = true) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cx = canvas.width / 2;
+            const cy = canvas.height - 10;
+            const radius = 70;
+
+            // Background Arc
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, Math.PI, 2 * Math.PI);
+            ctx.lineWidth = 14;
+            ctx.strokeStyle = '#334155';
+            ctx.stroke();
+
+            // Value Arc
+            let clampedVal = Math.max(min, Math.min(max, value));
+            let pct = (clampedVal - min) / (max - min);
+            let endAngle = Math.PI + pct * Math.PI;
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, Math.PI, endAngle);
+            ctx.lineWidth = 14;
+            
+            // Color selection based on target ratio
+            let color = '#10b981'; // Green
+            if (canvasId === 'gaugeEbit') {
+                color = value >= 0.08 ? '#10b981' : (value >= 0.0 ? '#f59e0b' : '#ef4444');
+            } else if (canvasId === 'gaugeEquity') {
+                color = value >= 0.35 ? '#10b981' : (value >= 0.20 ? '#f59e0b' : '#ef4444');
+            } else if (canvasId === 'gaugeCurrent') {
+                color = value >= 1.30 ? '#10b981' : (value >= 1.0 ? '#f59e0b' : '#ef4444');
+            } else if (canvasId === 'gaugeInventory') {
+                color = value <= 0.40 ? '#10b981' : (value <= 0.65 ? '#f59e0b' : '#ef4444');
+            }
+
+            ctx.strokeStyle = color;
+            ctx.stroke();
+
+            // Target Indicator Line
+            let targetPct = (targetVal - min) / (max - min);
+            let targetAngle = Math.PI + targetPct * Math.PI;
+            let tx1 = cx + (radius - 12) * Math.cos(targetAngle);
+            let ty1 = cy + (radius - 12) * Math.sin(targetAngle);
+            let tx2 = cx + (radius + 12) * Math.cos(targetAngle);
+            let ty2 = cy + (radius + 12) * Math.sin(targetAngle);
+
+            ctx.beginPath();
+            ctx.moveTo(tx1, ty1);
+            ctx.lineTo(tx2, ty2);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+        }
+
+        function updateGauges(data) {
+            // 2025 actual metrics
+            const ebitMargin = data.ebit[2] / data.revenue[2];
+            const equityRatio = data.equity[2] / data.assets[2];
+            const currentRatio = (data.inventory[2] + data.cash[2]) / (data.assets[2] - data.equity[2]);
+            const invRatio = data.inventory[2] / data.revenue[2];
+
+            // Render Gauges
+            drawGauge('gaugeEbit', ebitMargin, -0.15, 0.15, 0.08);
+            drawGauge('gaugeEquity', equityRatio, 0.0, 1.0, 0.35);
+            drawGauge('gaugeCurrent', currentRatio, 0.5, 3.0, 1.30);
+            drawGauge('gaugeInventory', invRatio, 0.0, 1.0, 0.40);
+
+            // Update text values
+            document.getElementById('valEbit').innerHTML = (ebitMargin * 100).toFixed(1) + "%";
+            document.getElementById('valEquity').innerText = (equityRatio * 100).toFixed(1) + "%";
+            document.getElementById('valCurrent').innerText = currentRatio.toFixed(2) + "x";
+            document.getElementById('valInventory').innerText = (invRatio * 100).toFixed(1) + "%";
+
+            // Update Pills
+            let pEbit = document.getElementById('pillEbit');
+            if (ebitMargin < 0) { pEbit.className = 'gauge-status-pill status-danger'; pEbit.innerText = 'OPERATING LOSS'; }
+            else if (ebitMargin < 0.08) { pEbit.className = 'gauge-status-pill status-warning'; pEbit.innerText = 'BELOW TARGET'; }
+            else { pEbit.className = 'gauge-status-pill status-healthy'; pEbit.innerText = 'HEALTHY MARGIN'; }
+
+            let pEquity = document.getElementById('pillEquity');
+            if (equityRatio >= 0.35) { pEquity.className = 'gauge-status-pill status-healthy'; pEquity.innerText = 'SOLVENT & STRONG'; }
+            else { pEquity.className = 'gauge-status-pill status-warning'; pEquity.innerText = 'CAPITAL THIN'; }
+        }
+
+        // Render Tables
+        function renderTables(data) {
+            // 1. Income Statement
+            const tbodyIncome = document.getElementById('tbodyIncome');
+            tbodyIncome.innerHTML = `
+                <tr><td>Sales Revenue</td>${data.revenue.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Non-Personnel Operating Expenses</td>${data.opCost.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Personnel Expenses</td>${data.persCost.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="subtotal-row"><td>EBITDA</td>${data.ebitda.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Depreciation & Amortization</td>${data.depr.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="subtotal-row"><td>Operating Profit (EBIT)</td>${data.ebit.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Net Financial Income / (Expense)</td>${data.netFin.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Income Tax Expense</td>${data.tax.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="total-row"><td>Net Income</td>${data.netInc.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+            `;
+
+            // 2. Balance Sheet
+            const tbodyBalance = document.getElementById('tbodyBalance');
+            tbodyBalance.innerHTML = `
+                <tr class="section-header"><td colspan="9">ASSETS</td></tr>
+                <tr><td>Cash & Cash Equivalents</td>${data.cash.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Inventory & Operating Current Assets</td>${data.inventory.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="total-row"><td>Total Assets</td>${data.assets.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="section-header"><td colspan="9">EQUITY & LIABILITIES</td></tr>
+                <tr><td>Shareholders' Equity</td>${data.equity.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>Total Liabilities</td>${data.assets.map((a, i) => `<td>${fmt(a - data.equity[i])}</td>`).join('')}</tr>
+                <tr class="total-row"><td>Total Liabilities & Equity</td>${data.assets.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+            `;
+
+            // 3. Cash Flow
+            const tbodyCash = document.getElementById('tbodyCash');
+            tbodyCash.innerHTML = `
+                <tr><td>Net Income</td>${data.netInc.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr><td>D&A Add-back</td>${data.depr.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+                <tr class="subtotal-row"><td>Operating Cash Flow</td>${data.netInc.map((n, i) => `<td>${fmt(n + data.depr[i])}</td>`).join('')}</tr>
+                <tr class="total-row"><td>Ending Cash Balance</td>${data.cash.map(v => `<td>${fmt(v)}</td>`).join('')}</tr>
+            `;
+
+            // 4. Ratios
+            const tbodyRatios = document.getElementById('tbodyRatios');
+            tbodyRatios.innerHTML = `
+                <tr><td>Operating Margin (EBIT %)</td>${data.ebit.map((e, i) => `<td>${fmt(e / data.revenue[i], true)}</td>`).join('')}</tr>
+                <tr><td>Equity Ratio (Egenkapitalandel)</td>${data.equity.map((e, i) => `<td>${fmt(e / data.assets[i], true)}</td>`).join('')}</tr>
+                <tr><td>Inventory / Revenue Ratio</td>${data.inventory.map((inv, i) => `<td>${fmt(inv / data.revenue[i], true)}</td>`).join('')}</tr>
+            `;
+        }
+
+        function updateModelScenario() {
+            const sc = document.getElementById('scenarioSelect').value;
+            const data = modelData[sc];
+            updateGauges(data);
+            renderTables(data);
+
+            // Update Memo Outlook text
+            const outlookEl = document.getElementById('memoScenarioOutlook');
+            if (sc === 'Base Case') {
+                outlookEl.innerHTML = `Under the active <strong>Base Case</strong> forecast, revenue recovers to NOK 19.79M by 2030 with Net Income of NOK 63.7K and ending cash of NOK 6.10M. Balance sheet equity remains strong at NOK 16.37M.`;
+            } else if (sc === 'Bull Case') {
+                outlookEl.innerHTML = `Under the active <strong>Bull Case</strong> forecast, strong volume expansion (+10% YoY) drives 2030 revenue to NOK 30.31M, generating Net Income of NOK 1.12M and building cash reserves to NOK 12.80M.`;
+            } else if (sc === 'Bear Case') {
+                outlookEl.innerHTML = `Under the active <strong>Bear Case</strong> forecast, persistent top-line decline (-4% volume) causes cash depletion by 2029, dragging equity down to NOK 4.12M by 2030. Immediate working capital release is required.`;
+            } else if (sc === 'Severe Stress') {
+                outlookEl.innerHTML = `Under the active <strong>Severe Stress</strong> forecast, severe revenue contraction (-15% volume, -2% price) depletes cash by 2027, forcing full credit facility drawdowns and threatening insolvency unless emergency restructuring occurs.`;
+            }
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function openMemoModal() {
+            document.getElementById('memoModal').classList.add('active');
+        }
+
+        function closeMemoModal() {
+            document.getElementById('memoModal').classList.remove('active');
+        }
+
+        function copyMemoToClipboard() {
+            const text = document.querySelector('.memo-doc').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Recommended Action Memorandum copied to clipboard!');
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateModelScenario();
+        });
+    </script>
+</body>
+</html>
