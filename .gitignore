@@ -1,2 +1,18 @@
+# Python & Virtual Environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+
+# Power BI Local User Cache & Settings
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+
+# IDE & System Files
+.vscode/
+.idea/
+.DS_Store
+*.log
